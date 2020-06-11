@@ -1,10 +1,12 @@
+const { config } = require('../../config');
+
 const db = require('mongoose');
 const Model = require('./model');
 
-const MDBuser = 'db_user_platzi';
-const MDBpassword = 'Og2cOYgGTV6nyVJG';
-const MDBcluster = 'curso-platzi';
-const MDBdb = 'cursonode_db';
+const MDBuser = encodeURIComponent(config.mdbUser);
+const MDBpassword = encodeURIComponent(config.mdbPassword);
+const MDBcluster = config.mdbCluster;
+const MDBdb = config.mdbName;
 const uri = `mongodb+srv://${MDBuser}:${MDBpassword}@${MDBcluster}-kuuzl.mongodb.net/${MDBdb}?retryWrites=true&w=majority`;
 
 db.Promise = global.Promise;
