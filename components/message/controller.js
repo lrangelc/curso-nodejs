@@ -35,8 +35,25 @@ function updateMessage(id, message) {
     });
 }
 
+function deleteMessage(id) {
+    return new Promise(async (resolve, reject) => {
+        if (!id) {
+            console.error('[messageController] Id invalido');
+            return reject('los datos son incorrectos');
+        }
+        store.delete(id)
+            .then(() => {
+                resolve();
+            })
+            .catch((err) => {
+                reject(err);
+            })
+    });
+}
+
 module.exports = {
     addMessage,
     getMessages,
-    updateMessage
+    updateMessage,
+    deleteMessage
 };

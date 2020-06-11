@@ -39,11 +39,14 @@ router.put('/', function (req, res) {
     response.success(req, res, 'message updated');
 });
 
-router.delete('/', function (req, res) {
-    console.log(req.body);
-    // res.send('message deleted');
-    response.success(req, res, 'message deleted');
-
+router.delete('/:id', function (req, res) {
+    controller.deleteMessage(req.params.id)
+        .then((data) => {
+            response.success(req, res, `Message ${req.params.id} deleted`, 200);
+        })
+        .catch((err) => {
+            response.error(req, res, 'Error Interno', 500, 'Error en el controlador ' + err);
+        });
 });
 
 module.exports = router;
