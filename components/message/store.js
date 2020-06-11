@@ -1,5 +1,4 @@
 const { config } = require('../../config');
-
 const db = require('mongoose');
 const Model = require('./model');
 
@@ -18,20 +17,36 @@ db.connect(uri, {
     .then(() => console.log('[db] Conectada con éxito'))
     .catch(err => console.error('[db] Error al tratar de conectar', err));
 
-function addMessage(message) {
+async function addMessage(message) {
     const myMessage = new Model(message);
-    myMessage.save();
+    const newMessage = await myMessage.save();
+    return newMessage;
 }
 
-async function getMessages() {
-    const messages = await Model.find();
+async function getMessages(filterUser) {
+    let filter = {};
+    if (filterUser != null) {
+        filter = {
+            user: new RegExp(filterUser, 'i')
+        };
+        // filter = { user: filterUser };
+    }
+    const messages = await Model.find(filter);
     return messages;
+}
+
+async function updateMessage(id, message) {
+    const foundMessage = await Model.findOne({ _id: id });
+    foundMessage.message = message;
+    const newMessage = await foundMessage.save();
+
+    return newMessage;
 }
 
 module.exports = {
     add: addMessage,
     list: getMessages,
+    update: updateMessage
     // get:
-    // update:
     // delete:
 };
