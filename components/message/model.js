@@ -7,7 +7,8 @@ const mySchema = new Schema({
     chatId: { type: Schema.ObjectId, ref: 'chat' },
     userId: { type: Schema.ObjectId, ref: 'user' },
     message: { type: String, required: true },
-    date: Date
+    date: Date,
+    fileUrl: String
 });
 
 const model = mongoose.model(collectionName, mySchema, collectionName);

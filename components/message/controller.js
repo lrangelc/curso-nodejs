@@ -1,16 +1,23 @@
+const { config } = require('../../config');
+const PORT = config.port;
 const store = require('./store');
 
-function addMessage(chatId, userId, message) {
+function addMessage(chatId, userId, message, file) {
     return new Promise(async (resolve, reject) => {
         if (!chatId || !userId || !message) {
             console.error('[messageController] No hay chat, usuario o mensaje');
             return reject('los datos son incorrectos');
         }
+        let fileUrl = '';
+        if (file) {
+            fileUrl = `http://localhost:${PORT}/app/files/${file.filename}`;
+        }
         const fullMessage = {
             chatId: chatId,
             userId: userId,
             message: message,
-            date: new Date()
+            date: new Date(),
+            fileUrl: fileUrl
         };
         const result = await store.add(fullMessage);
         resolve(result);
