@@ -1,42 +1,41 @@
 const store = require('./store');
 
-function addMessage(user, message) {
+function addUser(name) {
     return new Promise(async (resolve, reject) => {
-        if (!user || !message) {
-            console.error('[messageController] No hay usuario o mensaje');
+        if (!name) {
+            console.error('[userController] name invalid');
             return reject('los datos son incorrectos');
         }
-        const fullMessage = {
-            user: user,
-            message: message,
+        const fullUser = {
+            name: name,
             date: new Date()
         };
-        const result = await store.add(fullMessage);
+        const result = await store.add(fullUser);
         resolve(result);
     });
 }
 
-function getMessages(filterMessages) {
+function getUsers(filterUsers) {
     return new Promise((resolve, reject) => {
-        resolve(store.list(filterMessages));
+        resolve(store.list(filterUsers));
     });
 }
 
-function updateMessage(id, message) {
+function updateUser(id, name) {
     return new Promise(async (resolve, reject) => {
-        if (!id || !message) {
-            console.error('[messageController] No hay usuario o mensaje');
+        if (!id || !name) {
+            console.error('[userController] No hay usuario o name');
             return reject('los datos son incorrectos');
         }
-        const result = await store.update(id, message);
+        const result = await store.update(id, name);
         resolve(result);
     });
 }
 
-function deleteMessage(id) {
+function deleteUser(id) {
     return new Promise(async (resolve, reject) => {
         if (!id) {
-            console.error('[messageController] Id invalido');
+            console.error('[userController] Id invalido');
             return reject('los datos son incorrectos');
         }
         store.delete(id)
@@ -50,8 +49,8 @@ function deleteMessage(id) {
 }
 
 module.exports = {
-    addMessage,
-    getMessages,
-    updateMessage,
-    deleteMessage
+    addUser,
+    getUsers,
+    updateUser,
+    deleteUser
 };
