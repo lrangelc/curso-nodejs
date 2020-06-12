@@ -17,9 +17,11 @@ router.get('/', function (req, res) {
         })
 });
 
-router.post('/',upload.single('file'), function (req, res) {
-    console.log(req.file);
-    controller.addMessage(req.body.chatId, req.body.userId, req.body.message,req.file)
+router.post('/', upload.single('file'), function (req, res) {
+    if (req.file) {
+        console.log(req.file);
+    }
+    controller.addMessage(req.body.chatId, req.body.userId, req.body.message, req.file)
         .then((fullMessage) => {
             response.success(req, res, fullMessage, 201);
         })

@@ -1,6 +1,7 @@
 const { config } = require('../../config');
 const PORT = config.port;
 const store = require('./store');
+const socket = require('../../socket').socket;
 
 function addMessage(chatId, userId, message, file) {
     return new Promise(async (resolve, reject) => {
@@ -20,6 +21,9 @@ function addMessage(chatId, userId, message, file) {
             fileUrl: fileUrl
         };
         const result = await store.add(fullMessage);
+
+        socket.io.emit('message', fullMessage);
+
         resolve(result);
     });
 }

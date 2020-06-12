@@ -1,6 +1,9 @@
 const { config } = require('./config');
 const express = require('express');
+const app = express();
+const server = require('http').Server(app);
 const bodyParser = require('body-parser');
+const socket = require('./socket');
 const db = require('./db');
 
 const router = require('./network/routes');
@@ -14,15 +17,15 @@ const MDBurl = `mongodb+srv://${MDBuser}:${MDBpassword}@${MDBcluster}-kuuzl.mong
 
 db(MDBurl);
 
-var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+socket.connect(server);
+
 router(app);
 
-app.use('/app',express.static('public'));
+app.use('/app', express.static('public'));
 
-app.listen(PORT);
-console.log(`Application listen on http://localhost:${PORT}`);
-
-console.log(process.env.PORT);
+server.listen(PORT, function () {
+    console.log(`Application listen on http://localhost:${PORT}`);
+});

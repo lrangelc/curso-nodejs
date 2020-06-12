@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Websocket</title>
+    <!-- <script src="socket.io/socket.io.js"></script> -->
+    <!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+</head>
+
+<body>
+    <h1>Mira la consola</h1>
+
+    <script>
+        var socket = io.connect('http://localhost:3000', {
+            forceNew: true
+        });
+
+        socket.on('message', function (data) {
+            console.log(data);
+        });
+
+        setInterval(() => {
+            socket.emit('my other event', { my: 'data' });
+            console.log('se envio mensaje al servidor');
+        }, 15000);
+
+
+    </script>
+</body>
+
+</html>
