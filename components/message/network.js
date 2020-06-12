@@ -1,10 +1,11 @@
+const { config } = require('../../config');
 const express = require('express');
 const multer = require('multer');
 const response = require('../../network/response');
 const controller = require('./controller');
 const router = express.Router();
 
-const upload = multer({ dest: 'public/uploads/' });
+const upload = multer({ dest: `public/${config.filesRoute}/` });
 
 router.get('/', function (req, res) {
     const filterMessages = req.query.userId || null;

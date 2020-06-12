@@ -11,7 +11,7 @@ function addMessage(chatId, userId, message, file) {
         }
         let fileUrl = '';
         if (file) {
-            fileUrl = `http://localhost:${PORT}/app/files/${file.filename}`;
+            fileUrl = `${config.host}:${PORT}${config.publicRoute}/${config.filesRoute}/${file.filename}`;
         }
         const fullMessage = {
             chatId: chatId,
