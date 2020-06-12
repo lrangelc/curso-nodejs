@@ -4,6 +4,7 @@ const collectionName = 'message';
 const Schema = mongoose.Schema;
 
 const mySchema = new Schema({
+    chatId: { type: Schema.ObjectId, ref: 'chat' },
     userId: { type: Schema.ObjectId, ref: 'user' },
     message: { type: String, required: true },
     date: Date

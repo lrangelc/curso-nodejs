@@ -15,7 +15,7 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    controller.addMessage(req.body.userId, req.body.message)
+    controller.addMessage(req.body.chatId, req.body.userId, req.body.message)
         .then((fullMessage) => {
             response.success(req, res, fullMessage, 201);
         })
@@ -35,7 +35,6 @@ router.patch('/:id', function (req, res) {
 });
 
 router.put('/', function (req, res) {
-    // res.send('message updated');
     response.success(req, res, 'message updated');
 });
 

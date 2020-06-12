@@ -17,6 +17,7 @@ async function getMessages(filterUser) {
             // filter = { user: filterUser };
         }
         const messages = Model.find(filter)
+            .populate('chatId')
             .populate('userId')
             // .exec((err,populated) => {
             //     if (err) {

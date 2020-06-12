@@ -1,13 +1,13 @@
 const store = require('./store');
 
-function addChat(name) {
+function addChat(users) {
     return new Promise(async (resolve, reject) => {
-        if (!name) {
-            console.error('[chatController] name invalid');
+        if (!users || !Array.isArray(users)) {
+            console.error('[chatController] invalid users list');
             return reject('los datos son incorrectos');
         }
         const fullChat = {
-            name: name,
+            users: users,
             date: new Date()
         };
         const result = await store.add(fullChat);
@@ -15,19 +15,19 @@ function addChat(name) {
     });
 }
 
-function getChats(filterChats) {
+function getChats(userId) {
     return new Promise((resolve, reject) => {
-        resolve(store.list(filterChats));
+        resolve(store.list(userId));
     });
 }
 
-function updateChat(id, name) {
+function updateChat(id, users) {
     return new Promise(async (resolve, reject) => {
-        if (!id || !name) {
-            console.error('[chatController] Invalid id or name');
+        if (!id || !Array.isArray(users)) {
+            console.error('[chatController] invalid id or users list');
             return reject('los datos son incorrectos');
         }
-        const result = await store.update(id, name);
+        const result = await store.update(id, users);
         if (result == null) {
             return reject(`los datos son incorrectos ${id}`);
         }

@@ -6,23 +6,29 @@ async function addChat(chat) {
     return newChat;
 }
 
-async function getChats(filterChat) {
-    let filter = {};
-    if (filterChat != null) {
-        filter = {
-            chat: new RegExp(filterChat, 'i')
-        };
-    }
-    const chats = await model.Model.find(filter);
-    return chats;
+async function getChats(userId) {
+    return new Promise((resolve, reject) => {
+        let filter = {};
+        if (userId != null) {
+            filter = {
+                users: userId
+            };
+        }
+        const chats = model.Model.find(filter)
+            .populate('users')
+            .catch(err => {
+                reject(err);
+            });
+        resolve(chats);
+    });
 }
 
-async function updateChat(id, name) {
+async function updateChat(id, users) {
     try {
         if (model.objectIdIsValid(id)) {
             const foundChat = await model.Model.findOne({ _id: id });
             if (foundChat) {
-                foundChat.name = name;
+                foundChat.users = users;
                 const newChat = await foundChat.save();
 
                 return newChat;
