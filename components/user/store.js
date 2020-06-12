@@ -1,7 +1,7 @@
-const Model = require('./model');
+const model = require('./model');
 
 async function addUser(user) {
-    const myUser = new Model(user);
+    const myUser = new model.Model(user);
     const newUser = await myUser.save();
     return newUser;
 }
@@ -13,20 +13,36 @@ async function getUsers(filterUser) {
             user: new RegExp(filterUser, 'i')
         };
     }
-    const users = await Model.find(filter);
+    const users = await model.Model.find(filter);
     return users;
 }
 
 async function updateUser(id, name) {
-    const foundUser = await Model.findOne({ _id: id });
-    foundUser.name = name;
-    const newUser = await foundUser.save();
+    try {
+        if (model.objectIdIsValid(id)) {
+            const foundUser = await model.Model.findOne({ _id: id });
+            if (foundUser) {
+                foundUser.name = name;
+                const newUser = await foundUser.save();
 
-    return newUser;
+                return newUser;
+            }
+        }
+        else {
+            throw `invalid id ${id}`
+        }
+    } catch (err) {
+        console.error(err);
+    }
+    return null;
 }
 
 async function deleteUser(id) {
-    return Model.deleteOne({ _id: id });
+    if (model.objectIdIsValid(id)) {
+        return model.Model.deleteOne({ _id: id });
+    } else {
+        throw `invalid id ${id}`
+    }
 }
 
 module.exports = {

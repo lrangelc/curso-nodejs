@@ -1,42 +1,44 @@
 const store = require('./store');
 
-function addMessage(userId, message) {
+function addChat(name) {
     return new Promise(async (resolve, reject) => {
-        if (!userId || !message) {
-            console.error('[messageController] No hay usuario o mensaje');
+        if (!name) {
+            console.error('[chatController] name invalid');
             return reject('los datos son incorrectos');
         }
-        const fullMessage = {
-            userId: userId,
-            message: message,
+        const fullChat = {
+            name: name,
             date: new Date()
         };
-        const result = await store.add(fullMessage);
+        const result = await store.add(fullChat);
         resolve(result);
     });
 }
 
-function getMessages(filterMessages) {
+function getChats(filterChats) {
     return new Promise((resolve, reject) => {
-        resolve(store.list(filterMessages));
+        resolve(store.list(filterChats));
     });
 }
 
-function updateMessage(id, message) {
+function updateChat(id, name) {
     return new Promise(async (resolve, reject) => {
-        if (!id || !message) {
-            console.error('[messageController] No hay usuario o mensaje');
+        if (!id || !name) {
+            console.error('[chatController] Invalid id or name');
             return reject('los datos son incorrectos');
         }
-        const result = await store.update(id, message);
+        const result = await store.update(id, name);
+        if (result == null) {
+            return reject(`los datos son incorrectos ${id}`);
+        }
         resolve(result);
     });
 }
 
-function deleteMessage(id) {
+function deleteChat(id) {
     return new Promise(async (resolve, reject) => {
         if (!id) {
-            console.error('[messageController] Id invalido');
+            console.error('[chatController] Id invalido');
             return reject('los datos son incorrectos');
         }
         store.delete(id)
@@ -50,8 +52,8 @@ function deleteMessage(id) {
 }
 
 module.exports = {
-    addMessage,
-    getMessages,
-    updateMessage,
-    deleteMessage
+    addChat,
+    getChats,
+    updateChat,
+    deleteChat
 };

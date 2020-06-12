@@ -7,15 +7,29 @@ async function addMessage(message) {
 }
 
 async function getMessages(filterUser) {
-    let filter = {};
-    if (filterUser != null) {
-        filter = {
-            user: new RegExp(filterUser, 'i')
-        };
-        // filter = { user: filterUser };
-    }
-    const messages = await Model.find(filter);
-    return messages;
+    return new Promise((resolve, reject) => {
+
+        let filter = {};
+        if (filterUser != null) {
+            filter = {
+                user: new RegExp(filterUser, 'i')
+            };
+            // filter = { user: filterUser };
+        }
+        const messages = Model.find(filter)
+            .populate('userId')
+            // .exec((err,populated) => {
+            //     if (err) {
+            //         reject(err);
+            //         return false;
+            //     }
+            //     resolve(populated);
+            // })
+            .catch(err => {
+                reject(err);
+            });
+        resolve(messages);
+    });
 }
 
 async function updateMessage(id, message) {

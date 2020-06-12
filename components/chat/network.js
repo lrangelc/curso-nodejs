@@ -4,10 +4,10 @@ const controller = require('./controller');
 const router = express.Router();
 
 router.get('/', function (req, res) {
-    const filterMessages = req.query.userId || null;
-    controller.getMessages(filterMessages)
-        .then((messageList) => {
-            response.success(req, res, messageList, 200);
+    const filterChats = req.query.chat || null;
+    controller.getChats(filterChats)
+        .then((chatList) => {
+            response.success(req, res, chatList, 200);
         })
         .catch((err) => {
             response.error(req, res, 'Unexpected Error', 500, err);
@@ -15,9 +15,9 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    controller.addMessage(req.body.userId, req.body.message)
-        .then((fullMessage) => {
-            response.success(req, res, fullMessage, 201);
+    controller.addChat(req.body.name)
+        .then((fullChat) => {
+            response.success(req, res, fullChat, 201);
         })
         .catch((err) => {
             response.error(req, res, 'Informacion invalida', 400, 'Error en el controlador ' + err);
@@ -25,7 +25,7 @@ router.post('/', function (req, res) {
 });
 
 router.patch('/:id', function (req, res) {
-    controller.updateMessage(req.params.id, req.body.message)
+    controller.updateChat(req.params.id, req.body.name)
         .then((data) => {
             response.success(req, res, data, 200);
         })
@@ -35,14 +35,13 @@ router.patch('/:id', function (req, res) {
 });
 
 router.put('/', function (req, res) {
-    // res.send('message updated');
-    response.success(req, res, 'message updated');
+    response.success(req, res, 'chat updated');
 });
 
 router.delete('/:id', function (req, res) {
-    controller.deleteMessage(req.params.id)
+    controller.deleteChat(req.params.id)
         .then((data) => {
-            response.success(req, res, `Message ${req.params.id} deleted`, 200);
+            response.success(req, res, `Chat ${req.params.id} deleted`, 200);
         })
         .catch((err) => {
             response.error(req, res, 'Error Interno', 500, 'Error en el controlador ' + err);

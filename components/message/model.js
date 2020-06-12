@@ -4,7 +4,7 @@ const collectionName = 'message';
 const Schema = mongoose.Schema;
 
 const mySchema = new Schema({
-    user: String,
+    userId: { type: Schema.ObjectId, ref: 'user' },
     message: { type: String, required: true },
     date: Date
 });

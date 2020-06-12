@@ -24,10 +24,13 @@ function getUsers(filterUsers) {
 function updateUser(id, name) {
     return new Promise(async (resolve, reject) => {
         if (!id || !name) {
-            console.error('[userController] No hay usuario o name');
+            console.error('[userController] Invalid id or name');
             return reject('los datos son incorrectos');
         }
         const result = await store.update(id, name);
+        if (result == null) {
+            return reject(`los datos son incorrectos ${id}`);
+        }
         resolve(result);
     });
 }
